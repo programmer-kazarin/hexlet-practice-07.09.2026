@@ -1,0 +1,2 @@
+В import_sales.txt исправил формат даты и partner_id заменил 4 на 1, так как 4 нет в таблице partners.
+В import_partners.csv убрал лишние пробелы в company_name, формат телефона привел к виду +7xxxxxxxxx.
