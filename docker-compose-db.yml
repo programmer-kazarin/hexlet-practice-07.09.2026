@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: 'hexlet-postgre'
+    image: postgres:15.6
+    environment:
+      POSTGRES_DB: "test_db_kazarin"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5435:5432"
