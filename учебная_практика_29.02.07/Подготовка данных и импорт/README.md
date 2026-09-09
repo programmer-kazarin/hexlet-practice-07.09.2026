@@ -18,11 +18,18 @@ Index: []
 На выходе 3 файла для импорта: partners_clean.csv, products_clean.csv, deliveries_clean.csv.
 И один файл sales_orphans.csv с записями, не прошедшими проверку на ссылочную целостность.
 
-4. Проверочные запросы:
+4. Синхронизация автоинкрементов после явной вставки id
+``` sql
+SELECT setval('partners_partner_id_seq',   (SELECT MAX(partner_id)  FROM partners));
+SELECT setval('products_product_id_seq',   (SELECT MAX(product_id)  FROM products));
+SELECT setval('deliveries_delivery_id_seq',(SELECT MAX(delivery_id) FROM deliveries));
+```
+
+5. Проверочные запросы:
 ``` sql
 SELECT COUNT(*) AS partners_count   FROM partners;    -- ожидается 3
 SELECT COUNT(*) AS products_count   FROM products;     -- ожидается 3
 SELECT COUNT(*) AS deliveries_count FROM deliveries;   -- ожидается 4
 ```
 
-5. В папке screenshots скрины загрузки через импорт DBeaver и их результаты. 
+6. В папке screenshots скрины загрузки через импорт DBeaver и их результаты. 
