@@ -1,38 +1,43 @@
-DROP TABLE IF EXISTS sale;
-DROP TABLE IF EXISTS product;
-DROP TABLE IF EXISTS partner;
+DROP TABLE IF EXISTS deliveries;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS partners;
 
-CREATE TABLE partner (
-    id             SERIAL PRIMARY KEY,
-    company_name   VARCHAR(255) NOT NULL,
-    inn            VARCHAR(10)  NOT NULL UNIQUE,
-    contact_email  VARCHAR(255) UNIQUE,
-    phone          VARCHAR(12),
-    rating         NUMERIC(2,1)
+CREATE TABLE partners (
+    partner_id      SERIAL PRIMARY KEY,
+    company_name    VARCHAR(255)    NOT NULL,
+    inn             VARCHAR(12)     NOT NULL,
+    contact_email   VARCHAR(255),
+    phone           VARCHAR(30),
+    rating          DECIMAL(3,2),
+    created_at      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_partners_inn   UNIQUE (inn),
+    CONSTRAINT uq_partners_email UNIQUE (contact_email)
 );
 
-CREATE TABLE product (
-    id             SERIAL PRIMARY KEY,
-    product_name   VARCHAR(255) NOT NULL
+CREATE TABLE products (
+    product_id      SERIAL PRIMARY KEY,
+    product_name    VARCHAR(255)    NOT NULL,
+    unit_price      DECIMAL(10,2),
+    created_at      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT uq_products_name UNIQUE (product_name)
 );
 
-CREATE TABLE sale (
-    id             SERIAL PRIMARY KEY,
-    partner_id     INT NOT NULL,
-    product_id     INT NOT NULL,
-    sale_date      DATE NOT NULL,
-    quantity       SMALLINT NOT NULL CHECK (quantity > 0),
-    total_amount   NUMERIC(7,2) NOT NULL CHECK (total_amount >= 0),
-
-    CONSTRAINT fk_sale_partner
-        FOREIGN KEY (partner_id)
-        REFERENCES partner (id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE,
-
-    CONSTRAINT fk_sale_product
-        FOREIGN KEY (product_id)
-        REFERENCES product (id)
-        ON DELETE RESTRICT
-        ON UPDATE CASCADE
+CREATE TABLE deliveries (
+    delivery_id     SERIAL PRIMARY KEY,
+    partner_id      INT             NOT NULL,
+    product_id      INT             NOT NULL,
+    delivery_date   DATE            NOT NULL,
+    quantity        INT             NOT NULL CHECK (quantity > 0),
+    total_amount    DECIMAL(12,2)   NOT NULL CHECK (total_amount >= 0),
+    created_at      TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_deliveries_partner
+        FOREIGN KEY (partner_id) REFERENCES partners(partner_id)
+        ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_deliveries_product
+        FOREIGN KEY (product_id) REFERENCES products(product_id)
+        ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+CREATE INDEX idx_deliveries_partner_id ON deliveries(partner_id);
+CREATE INDEX idx_deliveries_product_id ON deliveries(product_id);
+CREATE INDEX idx_deliveries_date       ON deliveries(delivery_date);
