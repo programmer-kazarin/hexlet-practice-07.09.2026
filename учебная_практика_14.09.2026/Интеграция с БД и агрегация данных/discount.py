@@ -1,4 +1,3 @@
-# Скопировал из предыдущего задания
 def calculate_partner_discount(total_quantity: int) -> int:
     """Рассчитывает процент скидки партнера на основе суммарного объема закупок."""
     if total_quantity is None:
