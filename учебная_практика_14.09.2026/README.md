@@ -27,3 +27,8 @@ coverage report -m
 pip install psycopg2-binary
 
 ```
+
+## Разработка интерфейса (UI) по руководству по стилю
+### Запуск интерфейса
+* Открыть в браузере templates/index.html (скриншот в папке screenshots)
+* Партнеры пока захардкожены в html
