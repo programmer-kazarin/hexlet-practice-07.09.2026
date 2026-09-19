@@ -32,3 +32,33 @@ pip install psycopg2-binary
 ### Запуск интерфейса
 * Открыть в браузере templates/index.html (скриншот в папке screenshots)
 * Партнеры пока захардкожены в html
+
+## Наполнение интерфейса, отладка и стресс-тестирование
+``` bash
+cd Наполнение\ интерфейса
+
+# Установка библиотек
+pip install flask psycopg2-binary
+
+# Запуск сервера
+python server.py
+# * Serving Flask app 'server'
+# * Debug mode: on
+# WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+# * Running on all addresses (0.0.0.0)
+# * Running on http://127.0.0.1:5000
+# * Running on http://192.168.1.108:5000
+# Press CTRL+C to quit
+# * Restarting with stat
+# * Debugger is active!
+# * Debugger PIN: 254-347-196
+
+```
+
+### Открыть UI
+* Перейти в браузере по адресу http://localhost:5000
+
+### Запуск тестов
+``` bash
+python -m unittest discover -v
+```
