@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <title>CRM: Карточка партнера [Редактирование]</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="app-header">
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="Логотип компании" class="app-logo">
+        <h1 class="app-title">Карточка партнера — Редактирование</h1>
+    </header>
+
+    <main class="form-wrapper">
+        <form class="partner-form" id="partnerForm">
+
+            <!-- TODO backend -->
+            <input type="hidden" name="partner_id" id="partnerId" value="">
+
+            <label class="form-label" for="companyName">Наименование компании</label>
+            <input class="form-input" type="text" id="companyName" name="company_name"
+                   placeholder='ООО "Название компании"'>
+
+            <label class="form-label" for="inn">ИНН</label>
+            <input class="form-input" type="text" id="inn" name="inn" placeholder="10 или 12 цифр">
+
+            <label class="form-label" for="contactEmail">Email контакта</label>
+            <input class="form-input" type="email" id="contactEmail" name="contact_email"
+                   placeholder="example@company.ru">
+
+            <label class="form-label" for="phone">Телефон</label>
+            <input class="form-input" type="tel" id="phone" name="phone" placeholder="+7 000 000 00 00">
+
+            <label class="form-label" for="rating">Рейтинг</label>
+            <input class="form-input" type="number" id="rating" name="rating" min="0" max="10" step="0.1">
+
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Назад</a>
+                <button type="submit" class="btn btn-primary" id="saveButton">
+                    Сохранить
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script src="{{ url_for('static', filename='partner_form.js') }}"></script>
+</body>
+</html>

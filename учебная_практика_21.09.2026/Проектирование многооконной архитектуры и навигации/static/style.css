@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: #ffffff;
+    color: #1a1a1a;
+}
+
+/* ---------- Шапка ---------- */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* ← добавлено: центрирует логотип + заголовок */
+    gap: 15px;
+    background-color: #1a1a1a;
+    padding: 14px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-logo {
+    height: 36px;
+    width: auto;
+}
+
+.app-title {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.partners-wrapper {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+}
+
+/* ---------- Область карточек ---------- */
+.partners-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ---------- Карточка партнера (по Screenshot_2) ---------- */
+.partner-card {
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    padding: 14px 18px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.partner-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+
+.partner-card__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.partner-card__discount {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.partner-card__info {
+    font-size: 13px;
+    color: #444444;
+    line-height: 1.5;
+}
+
+/* ---------- Состояние "нет данных" ---------- */
+.empty-state {
+    text-align: center;
+    color: #888888;
+    font-size: 14px;
+    padding: 40px 0;
+}
+
+/* ---------- Тулбар с кнопкой "Добавить партнера" ---------- */
+.toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+/* ---------- Кнопки (общие для обоих окон) ---------- */
+.btn {
+    display: inline-block;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #333333;
+}
+
+.btn-primary:disabled {
+    background-color: #999999;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid #8a8a8a;
+}
+
+.btn-secondary:hover {
+    background-color: #f2f2f2;
+}
+
+/* ---------- Форма PartnerEditWindow ---------- */
+.form-wrapper {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+}
+
+.partner-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-top: 10px;
+}
+
+.form-input {
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #1a1a1a;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
