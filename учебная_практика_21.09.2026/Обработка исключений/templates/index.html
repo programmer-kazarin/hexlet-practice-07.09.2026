@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRM: Реестр партнеров</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="app-header">
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="Логотип компании" class="app-logo">
+        <h1 class="app-title">CRM: Список партнеров и скидок</h1>
+    </header>
+
+    <main class="partners-wrapper">
+
+        <div class="toolbar">
+            <a href="{{ url_for('partner_new') }}" class="btn btn-primary">
+                Добавить партнера
+            </a>
+        </div>
+
+        <div class="partners-container" id="partnersContainer">
+            <p class="loading-state" id="loadingState">Загрузка партнеров...</p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='dialog.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

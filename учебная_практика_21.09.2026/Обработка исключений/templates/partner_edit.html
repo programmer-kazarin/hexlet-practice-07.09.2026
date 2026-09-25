@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if mode == "edit" %}CRM: Карточка партнера [Редактирование]
+        {% else %}CRM: Карточка партнера [Добавление]{% endif %}
+    </title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="app-header">
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="Логотип компании" class="app-logo">
+        <h1 class="app-title">
+            {% if mode == "edit" %}Карточка партнера — Редактирование
+            {% else %}Карточка партнера — Новый партнер{% endif %}
+        </h1>
+    </header>
+
+    <main class="form-wrapper">
+        <form class="partner-form" id="partnerForm" data-mode="{{ mode }}" novalidate>
+
+            <input type="hidden" name="partner_id" id="partnerId"
+                   value="{{ partner.partner_id if partner else '' }}">
+
+            <label class="form-label" for="companyName">Наименование</label>
+            <input class="form-input" type="text" id="companyName" name="company_name"
+                   placeholder="Название компании"
+                   value="{{ partner.company_name if partner else '' }}" required>
+
+            <label class="form-label" for="inn">ИНН</label>
+            <input class="form-input" type="text" id="inn" name="inn"
+                   placeholder="10 или 12 цифр"
+                   pattern="^\d{10}(\d{2})?$"
+                   title="ИНН должен содержать 10 цифр (юрлицо) или 12 цифр (ИП)"
+                   value="{{ partner.inn if partner else '' }}" required>
+
+            <label class="form-label" for="partnerType">Тип партнера</label>
+            <select class="form-input" id="partnerType" name="partner_type" required>
+                <option value="" disabled {% if not partner %}selected{% endif %}>Выберите тип</option>
+                {% for type_option in ["ООО", "ЗАО", "ОАО", "ИП", "ТК"] %}
+                <option value="{{ type_option }}"
+                    {% if partner and partner.partner_type == type_option %}selected{% endif %}>
+                    {{ type_option }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <label class="form-label" for="rating">Рейтинг</label>
+            <input class="form-input" type="number" id="rating" name="rating"
+                   min="0" step="1" placeholder="0" title="Целое неотрицательное число"
+                   value="{{ partner.rating if partner else '' }}">
+
+            <label class="form-label" for="address">Адрес</label>
+            <input class="form-input" type="text" id="address" name="address"
+                   placeholder="Город, улица, дом"
+                   value="{{ partner.address if partner else '' }}">
+
+            <label class="form-label" for="directorName">ФИО директора</label>
+            <input class="form-input" type="text" id="directorName" name="director_name"
+                   placeholder="Иванов Иван Иванович"
+                   value="{{ partner.director_name if partner else '' }}">
+
+            <label class="form-label" for="phone">Телефон компании</label>
+            <input class="form-input" type="tel" id="phone" name="phone"
+                   placeholder="+7 (___) ___-__-__"
+                   pattern="^\+7\s?$?\d{3}$?\s?\d{3}-?\d{2}-?\d{2}$"
+                   title="Формат: +7 (999) 123-45-67"
+                   value="{{ partner.phone if partner else '' }}">
+
+            <label class="form-label" for="companyEmail">Email компании</label>
+            <input class="form-input" type="email" id="companyEmail" name="contact_email"
+                   placeholder="info@company.ru"
+                   title="Введите действующий email, например info@company.ru"
+                   value="{{ partner.contact_email if partner else '' }}">
+
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary" id="backLink">Назад</a>
+                <button type="submit" class="btn btn-primary" id="saveButton">
+                    Сохранить
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script src="{{ url_for('static', filename='dialog.js') }}"></script>
+    <script src="{{ url_for('static', filename='partner_form.js') }}"></script>
+</body>
+</html>
