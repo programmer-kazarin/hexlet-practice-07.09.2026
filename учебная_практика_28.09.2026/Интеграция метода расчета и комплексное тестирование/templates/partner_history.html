@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRM: История реализации продукции — {{ partner.company_name }}</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="app-header">
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="Логотип компании" class="app-logo">
+        <h1 class="app-title">История реализации продукции — {{ partner.company_name }}</h1>
+    </header>
+
+    <main class="history-wrapper" id="historyWrapper" data-partner-id="{{ partner.partner_id }}">
+
+        <div class="toolbar toolbar--start">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Назад</a>
+        </div>
+
+        <div id="historyContainer">
+            <p class="loading-state">Загрузка истории продаж...</p>
+        </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='dialog.js') }}"></script>
+    <script src="{{ url_for('static', filename='history.js') }}"></script>
+</body>
+</html>

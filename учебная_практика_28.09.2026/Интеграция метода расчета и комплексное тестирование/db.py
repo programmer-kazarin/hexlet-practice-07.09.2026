@@ -52,6 +52,41 @@ def _translate_unique_violation(error: psycopg2.errors.UniqueViolation, data: di
     return DuplicateInnError(f"Партнер с ИНН {data.get('inn')} уже существует")
 
 
+def _fetch_scalar(query: str, params: tuple):
+    """Выполняет запрос и возвращает значение первой колонки первой строки
+    (или None, если строк нет)."""
+    conn = None
+    try:
+        conn = _connect()
+        with conn.cursor() as cursor:
+            cursor.execute(query, params)
+            row = cursor.fetchone()
+            return row[0] if row is not None else None
+    except psycopg2.OperationalError as connection_error:
+        raise DatabaseUnavailableError(
+            "Не удалось подключиться к базе данных"
+        ) from connection_error
+    finally:
+        if conn is not None:
+            conn.close()
+
+
+def get_product_type_coefficient(product_type_id: int):
+    """Коэффициент типа продукции (Decimal) или None, если тип не найден."""
+    return _fetch_scalar(
+        "SELECT coefficient FROM product_types WHERE product_type_id = %s;",
+        (product_type_id,),
+    )
+
+
+def get_material_defect_percent(material_type_id: int):
+    """Процент брака материала (Decimal) или None, если материал не найден."""
+    return _fetch_scalar(
+        "SELECT defect_percent FROM material_types WHERE material_type_id = %s;",
+        (material_type_id,),
+    )
+
+
 def fetch_partners_raw():
     query = """
         SELECT
