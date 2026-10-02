@@ -14,15 +14,20 @@
 ## Разработка ядра алгоритма расчета материалов
 * materials.py - метод calculate_required_material
 * test_materials.py - юнит тесты метода calculate_required_material
+* server.py - 
 
 ``` bash Запуск тестов
 python test_materials.py
 ```
 
+## Интеграция метода расчета и комплексное тестирование
+* Калькулятор вынесен на отдельную страницу MaterialCalculatorWindow (отдельный калькулятор заказа)
+* material_calculator.html - форма "Калькулятор расчета материалов"
+* material_calculator.js - обработка формы калькулятора
+* server.py - добавлена обработка эндпоинтов для калькулятора
 
 
 ## Запуск проекта
-для всех четырех заданий
 ``` bash
 # Запуск сервера
 python server.py

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRM: Калькулятор расчета материалов</title>
+
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='resources/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="app-header">
+        <img src="{{ url_for('static', filename='resources/logo.png') }}" alt="Логотип компании" class="app-logo">
+        <h1 class="app-title">Калькулятор расчета материалов</h1>
+    </header>
+
+    <main class="calculator-wrapper">
+
+        <form class="calculator-form" id="calculatorForm" novalidate>
+
+            <label class="form-label" for="productTypeId">ID типа продукции</label>
+            <input class="form-input" type="number" id="productTypeId" name="product_type_id"
+                   min="1" step="1" placeholder="Например, 1">
+
+            <label class="form-label" for="materialTypeId">ID типа материала</label>
+            <input class="form-input" type="number" id="materialTypeId" name="material_type_id"
+                   min="1" step="1" placeholder="Например, 1">
+
+            <label class="form-label" for="quantity">Количество продукции, шт.</label>
+            <input class="form-input" type="number" id="quantity" name="quantity"
+                   min="1" step="1" placeholder="Например, 10">
+
+            <label class="form-label" for="param1">Параметр 1</label>
+            <input class="form-input" type="number" id="param1" name="param_1"
+                   min="0" step="any" placeholder="Вещественное положительное число">
+
+            <label class="form-label" for="param2">Параметр 2</label>
+            <input class="form-input" type="number" id="param2" name="param_2"
+                   min="0" step="any" placeholder="Вещественное положительное число">
+
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Назад</a>
+                <button type="submit" class="btn btn-primary" id="calculateButton">Рассчитать</button>
+            </div>
+        </form>
+
+        <section class="calc-result" id="resultPanel" hidden>
+            <p class="calc-result__label">Требуемое количество материала</p>
+            <p class="calc-result__value" id="resultValue"></p>
+            <p class="calc-result__details" id="resultDetails"></p>
+        </section>
+
+        <p class="calc-hint">
+            Формула: параметр 1 × параметр 2 × коэффициент типа продукции × количество ×
+            (1 + процент брака / 100), результат округляется вверх.
+            Коэффициент и процент брака берутся из справочников базы данных.
+        </p>
+    </main>
+
+    <script src="{{ url_for('static', filename='dialog.js') }}"></script>
+    <script src="{{ url_for('static', filename='material_calculator.js') }}"></script>
+</body>
+</html>

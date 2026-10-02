@@ -11,6 +11,7 @@ from db import (
     DuplicateEmailError,
     DatabaseUnavailableError,
 )
+from material_service import calculate_required_material_from_db
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -19,6 +20,14 @@ REQUIRED_FIELDS = [
     "company_name", "partner_type", "inn",
     "address", "director_name", "contact_email", "phone",
 ]
+
+CALCULATION_FIELDS = [
+    "product_type_id", "material_type_id", "quantity", "param_1", "param_2",
+]
+CALCULATION_FAILURE_MESSAGE = (
+    "Расчет невозможен: проверьте, что типы продукции и материала существуют, "
+    "а количество и параметры положительные"
+)
 
 
 def serialize_partner(partner: dict) -> dict:
@@ -56,6 +65,17 @@ def normalize_payload(payload: dict) -> dict:
     normalized = dict(payload)
     normalized["rating"] = int(payload.get("rating") or 0)
     return normalized
+
+def validate_calculation_payload(payload) -> str | None:
+    """Проверяет только форму запроса. Допустимость значений решает сам метод расчета:
+    отрицательные числа и несуществующие ID дойдут до него и вернутся как -1."""
+    if not isinstance(payload, dict):
+        return "Ожидается JSON-объект с параметрами расчета"
+    for field in CALCULATION_FIELDS:
+        value = payload.get(field)
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return f"Поле '{field}' должно быть числом"
+    return None
 
 
 @app.route("/")
@@ -164,6 +184,31 @@ def partner_history(partner_id):
         return redirect(url_for("index"))
 
     return render_template("partner_history.html", partner=partner)
+
+
+@app.route("/calculator")
+def calculator_page():
+    return render_template("material_calculator.html")
+
+
+@app.route("/api/calculate-material", methods=["POST"])
+def api_calculate_material():
+    payload = request.get_json(silent=True)
+
+    validation_error = validate_calculation_payload(payload)
+    if validation_error:
+        return jsonify({"error": validation_error}), 400
+
+    result = calculate_required_material_from_db(
+        payload["product_type_id"],
+        payload["material_type_id"],
+        payload["quantity"],
+        payload["param_1"],
+        payload["param_2"],
+    )
+    if result == -1:
+        return jsonify({"error": CALCULATION_FAILURE_MESSAGE}), 422
+    return jsonify({"result": result}), 200
 
 
 if __name__ == "__main__":

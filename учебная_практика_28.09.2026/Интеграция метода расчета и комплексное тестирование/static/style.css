@@ -333,3 +333,55 @@ select.form-input:invalid {
     justify-content: flex-end;
     gap: 10px;
 }
+
+/* ---------- Калькулятор материалов ---------- */
+.calculator-wrapper {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+}
+
+.calculator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.calc-result {
+    margin-top: 24px;
+    padding: 16px;
+    border: 2px solid #1a1a1a;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.calc-result[hidden] {
+    display: none;
+}
+
+.calc-result__label {
+    font-size: 13px;
+    color: #444444;
+}
+
+.calc-result__value {
+    margin: 8px 0;
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.calc-result__details {
+    font-size: 13px;
+    color: #444444;
+    line-height: 1.5;
+}
+
+.calc-hint {
+    margin-top: 16px;
+    font-size: 12px;
+    color: #888888;
+    line-height: 1.5;
+}

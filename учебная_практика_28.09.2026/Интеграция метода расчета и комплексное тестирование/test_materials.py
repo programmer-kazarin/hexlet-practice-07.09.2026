@@ -1,26 +1,20 @@
+import os
+import subprocess
+import sys
 import unittest
 from decimal import Decimal
 
 from materials import calculate_required_material
 
-# Мок-справочники
 PRODUCT_COEFFICIENTS = {1: Decimal("2.5"), 2: Decimal("1"), 3: Decimal("1.1")}
 MATERIAL_DEFECTS = {1: Decimal("0.5"), 2: Decimal("0"), 3: Decimal("1")}
 
 
-def fake_coefficient(product_type_id):
-    return PRODUCT_COEFFICIENTS.get(product_type_id)
-
-
-def fake_defect(material_type_id):
-    return MATERIAL_DEFECTS.get(material_type_id)
-
-
-def calc(product_type_id, material_type_id, quantity, param_1, param_2):
+def calc(product_type_id, material_type_id, quantity, param_1, param_2,
+         coefficients=PRODUCT_COEFFICIENTS, defects=MATERIAL_DEFECTS):
     return calculate_required_material(
         product_type_id, material_type_id, quantity, param_1, param_2,
-        coefficient_provider=fake_coefficient,
-        defect_provider=fake_defect,
+        coefficients, defects,
     )
 
 
@@ -40,11 +34,27 @@ class CalculateRequiredMaterialTest(unittest.TestCase):
     def test_integer_params_are_accepted(self):
         self.assertEqual(calc(2, 2, 2, 3, 4), 24)
 
+    def test_float_and_int_reference_values_are_accepted(self):
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: 2.5}, {1: 0.5}), 302)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: 2}, {1: 0}), 240)
+
     def test_unknown_product_type(self):
         self.assertEqual(calc(999, 1, 10, 3.0, 4.0), -1)
 
     def test_unknown_material_type(self):
         self.assertEqual(calc(1, 999, 10, 3.0, 4.0), -1)
+
+    def test_empty_reference_data(self):
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {}, {}), -1)
+
+    def test_invalid_reference_data(self):
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, None, MATERIAL_DEFECTS), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, PRODUCT_COEFFICIENTS, None), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: None}, {1: 0.5}), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: "2.5"}, {1: 0.5}), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: 0}, {1: 0.5}), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: -2}, {1: 0.5}), -1)
+        self.assertEqual(calc(1, 1, 10, 3.0, 4.0, {1: 2.5}, {1: -1}), -1)
 
     def test_non_positive_quantity(self):
         self.assertEqual(calc(1, 1, 0, 3.0, 4.0), -1)
@@ -65,6 +75,16 @@ class CalculateRequiredMaterialTest(unittest.TestCase):
     def test_nan_and_infinity(self):
         self.assertEqual(calc(1, 1, 10, float("nan"), 4.0), -1)
         self.assertEqual(calc(1, 1, 10, float("inf"), 4.0), -1)
+
+    def test_function_is_deterministic_and_does_not_mutate_references(self):
+        coefficients = {1: Decimal("2.5")}
+        defects = {1: Decimal("0.5")}
+        first = calc(1, 1, 10, 3.0, 4.0, coefficients, defects)
+        second = calc(1, 1, 10, 3.0, 4.0, coefficients, defects)
+        self.assertEqual(first, second)
+        self.assertEqual(coefficients, {1: Decimal("2.5")})
+        self.assertEqual(defects, {1: Decimal("0.5")})
+
 
 if __name__ == "__main__":
     unittest.main()
