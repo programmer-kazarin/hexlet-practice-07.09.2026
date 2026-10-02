@@ -26,6 +26,15 @@ python test_materials.py
 * material_calculator.js - обработка формы калькулятора
 * server.py - добавлена обработка эндпоинтов для калькулятора
 
+## Модульное тестирование (Unit Testing) и аудит безопасности
+* test_materials.py - тестовый модуль
+* db.py - все SQL-запросы используют параметризованные аргументы (экранирование)
+* исключения из try...except в server.py, db.py и material_service.py вфводятся в консоль и пишутся в файл app.log
+* app.log не закомитил, так как логи в репозитории не хранят
+
+``` bash Запуск тестов
+python test_materials.py
+```
 
 ## Запуск проекта
 ``` bash
